@@ -3,7 +3,6 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 )
 
@@ -35,13 +34,18 @@ func WebFetcher(url string , chFetchData chan *Character) error{
 	}
 	defer res.Body.Close()
 
-	body,err := io.ReadAll(res.Body)
-	if err !=nil {
-		fmt.Println("Error : ", err)
-	}
+	// body,err := io.ReadAll(res.Body)
+	// if err !=nil {
+	// 	fmt.Println("Error : ", err)
+	// }
 
 	var character Character
-	err = json.Unmarshal(body,&character)
+	// err = json.Unmarshal(body,&character)
+	// if err != nil{
+	// 	println("Error ", err)
+	// }
+	
+	err = json.NewDecoder(res.Body).Decode(&character)
 	if err != nil{
 		println("Error ", err)
 	}
